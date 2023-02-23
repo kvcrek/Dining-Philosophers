@@ -105,7 +105,6 @@ void startDining(int n, std::chrono::duration<duration> time) {
         }
     }
 
-
     std::this_thread::sleep_for(time);
     for (auto *p: philosophers) {
         delete p;
@@ -122,5 +121,5 @@ int main() {
     int n = 12; //number of philosophers
     startDining(n, 5s);
 
-    return 0
+    return 0;
 }
