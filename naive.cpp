@@ -90,8 +90,8 @@ std::ostream &operator<<(std::ostream &os, const Philosopher &philosopher) {
     return os;
 }
 
-template<typename duration>
-void startDining(int n, std::chrono::duration<duration> time) {
+template<typename T>
+void startDining(int n, T time) {
     std::vector<Fork *> forks(n);
     std::vector<Philosopher *> philosophers(n);
     paused = false;
