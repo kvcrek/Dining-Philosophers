@@ -1,3 +1,8 @@
+//  Asymmetric solution for Dining Philosophers problem is using a method, where each philosopher is given a number.
+//  If their number is even, they pick up left fork first. Philosophers with odd number pick right fork instead.
+//  This method is preventing deadlocks and starvation, but if there is odd number of philosophers, it may cause
+//  uneven distribution of meals between them.
+
 #include <iostream>
 #include <thread>
 #include <chrono>

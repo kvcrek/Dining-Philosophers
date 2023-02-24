@@ -1,3 +1,8 @@
+//  This solution is using a method, where the philosophers are checking if both forks are available.
+//  If they are available they pick them both simultaneously. In other case, they go back to thinking.
+//  This method prevents deadlocks, but allows for starvation of philosophers in specific case, where in each check
+//  their neighbors are busy eating.
+
 #include <iostream>
 #include <thread>
 #include <chrono>

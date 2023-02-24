@@ -1,3 +1,8 @@
+//  This solution is using 'naive' method, where each philosopher picks up the fork on his left, and then on his right.
+//  If fork cannot be picked up, he waits for the other philosopher to finish eating.
+//  Note that, this solution can enter a state, where all philosophers picked up their left fork at the same time, it
+//  can enter a state, where no action is made since all of them are waiting their right forks resulting in deadlock.
+
 #include <iostream>
 #include <thread>
 #include <chrono>
