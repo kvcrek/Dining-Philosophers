@@ -4,4 +4,5 @@ project(DiningPhilosophers)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(Naive naive.cpp)
+add_executable(Starve starve.cpp)
 
