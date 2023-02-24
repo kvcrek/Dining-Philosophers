@@ -46,9 +46,11 @@ public:
     void run() {
         while (!paused) {
             think();
+            if (paused) {
+                return;
+            }
             eat();
         }
-        return;
     }
 
     friend std::ostream &operator<<(std::ostream &os, const Philosopher &philosopher);
@@ -56,11 +58,11 @@ public:
 private:
     void status(const std::string &str) {
         std::lock_guard<std::mutex> lck(cout_lock);
-        std::cout << *this << " is " << str << std::endl;
+        std::cout << *this << " " << str << std::endl;
     }
 
     void think() {
-        status("thinking");
+        status("is thinking");
         std::this_thread::sleep_for(10ms);
     }
 
@@ -70,7 +72,7 @@ private:
         if (paused) {
             return;
         }
-        status("eating");
+        status("is eating");
         meals++;
         std::this_thread::sleep_for(10ms);
     }
