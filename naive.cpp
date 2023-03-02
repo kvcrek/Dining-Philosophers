@@ -32,18 +32,18 @@ private:
 class Philosopher {
 public:
     explicit Philosopher(int id, std::shared_ptr<Fork> left, std::shared_ptr<Fork> right, std::mutex &cout_lock)
-            : id(id),
-              cout_lock(cout_lock),
-              leftFork(std::move(left)),
-              rightFork(std::move(right)) {
+        : id(id),
+        cout_lock(cout_lock),
+        leftFork(std::move(left)),
+        rightFork(std::move(right)) {
         meals = 0;
     }
 
-    void start(){
+    void start() {
         paused = false;
     }
 
-    void stop(){
+    void stop() {
         paused = true;
         if(thr.joinable()){
         thr.join();
@@ -113,12 +113,11 @@ void startDining(int n, T time) {
         } else {
             philosophers.push_back(std::make_unique<Philosopher>(i + 1, forks[i]->getptr(), forks[i+1]->getptr(), m_cout));
         }
-        philosophers[i].get()->start();
+        philosophers[i]->start();
     }
-
     std::this_thread::sleep_for(time);
-    for (int i = 0; i < n; i++) {
-        philosophers[i].get()->stop();
+    for(auto &var : philosophers) {
+        var->stop();
     }
 }
 
