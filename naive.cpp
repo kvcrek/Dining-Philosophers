@@ -11,7 +11,6 @@
 
 using namespace std::chrono_literals;
 std::mutex m_cout;
-static bool paused = true;
 
 class Fork {
 public:
@@ -40,27 +39,35 @@ public:
               rightFork(right),
               cout_lock(cout_lock) {
         meals = 0;
+        paused = true;
+    }
+
+    void start(){
         paused = false;
-        thr.detach();
+    }
+
+    void stop(){
+        paused = true;
+        if(thr.joinable()){
+        thr.join();
+        }
     }
 
     ~Philosopher() {
         status("ate " + std::to_string(meals) + " times");
     }
 
-    void run() {
-        while (!paused) {
-            think();
-            if (paused) {
-                return;
-            }
-            eat();
-        }
-    }
 
     friend std::ostream &operator<<(std::ostream &os, const Philosopher &philosopher);
 
 private:
+    void run() {
+        while (!paused) {
+            think();
+            eat();
+        }
+    }
+
     void status(const std::string &str) {
         std::lock_guard<std::mutex> lck(cout_lock);
         std::cout << *this << " " << str << std::endl;
@@ -74,14 +81,12 @@ private:
     void eat() {
         std::lock_guard<std::mutex> lck(leftFork.mutex);
         std::lock_guard<std::mutex> rck(rightFork.mutex);
-        if (paused) {
-            return;
-        }
         status("is eating");
         meals++;
         std::this_thread::sleep_for(10ms);
     }
 
+    bool paused;
     std::mutex &cout_lock;
     std::thread thr = std::thread(&Philosopher::run, this);
     int id;
@@ -99,7 +104,6 @@ template<typename T>
 void startDining(int n, T time) {
     std::vector<Fork *> forks(n);
     std::vector<Philosopher *> philosophers(n);
-    paused = false;
 
     for (int i = 0; i < n; i++) {
         forks[i] = new Fork(Fork(i + 1));
@@ -110,9 +114,13 @@ void startDining(int n, T time) {
         } else {
             philosophers[i] = new Philosopher(i + 1, *forks[i], *forks[i + 1], m_cout);
         }
+        philosophers[i]->start();
     }
 
     std::this_thread::sleep_for(time);
+    for (auto *p: philosophers) {
+        p->stop();
+    }
     for (auto *p: philosophers) {
         delete p;
     }
@@ -121,7 +129,6 @@ void startDining(int n, T time) {
         delete p;
     }
     forks.clear();
-    paused = true;
 }
 
 int main() {
