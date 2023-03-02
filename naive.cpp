@@ -8,38 +8,35 @@
 #include <chrono>
 #include <vector>
 #include <mutex>
+#include <memory>
 
 using namespace std::chrono_literals;
 std::mutex m_cout;
 
-class Fork {
+class Fork : public std::enable_shared_from_this<Fork>  {
 public:
     std::mutex mutex;
 
-    explicit Fork(int id) {
-        this->id = id;
+    std::shared_ptr<Fork> getptr(){
+        return shared_from_this();
     }
 
-    friend std::ostream &operator<<(std::ostream &os, const Fork &fork);
+    [[nodiscard]] static std::shared_ptr<Fork> create(){
+        return std::shared_ptr<Fork>(new Fork);
+    }
 
 private:
-    int id;
+    Fork() = default;
 };
-
-std::ostream &operator<<(std::ostream &os, const Fork &fork) {
-    os << "Fork " << fork.id;
-    return os;
-}
 
 class Philosopher {
 public:
-    explicit Philosopher(int id, Fork &left, Fork &right, std::mutex &cout_lock)
+    explicit Philosopher(int id, std::shared_ptr<Fork> left, std::shared_ptr<Fork> right, std::mutex &cout_lock)
             : id(id),
-              leftFork(left),
-              rightFork(right),
-              cout_lock(cout_lock) {
+              cout_lock(cout_lock),
+              leftFork(std::move(left)),
+              rightFork(std::move(right)) {
         meals = 0;
-        paused = true;
     }
 
     void start(){
@@ -79,20 +76,20 @@ private:
     }
 
     void eat() {
-        std::lock_guard<std::mutex> lck(leftFork.mutex);
-        std::lock_guard<std::mutex> rck(rightFork.mutex);
+        std::lock_guard<std::mutex> lck(leftFork->mutex);
+        std::lock_guard<std::mutex> rck(rightFork->mutex);
         status("is eating");
         meals++;
         std::this_thread::sleep_for(10ms);
     }
 
-    bool paused;
+    bool paused = true;
     std::mutex &cout_lock;
     std::thread thr = std::thread(&Philosopher::run, this);
     int id;
     int meals;
-    Fork &leftFork;
-    Fork &rightFork;
+    std::shared_ptr<Fork> leftFork;
+    std::shared_ptr<Fork> rightFork;
 };
 
 std::ostream &operator<<(std::ostream &os, const Philosopher &philosopher) {
@@ -102,33 +99,27 @@ std::ostream &operator<<(std::ostream &os, const Philosopher &philosopher) {
 
 template<typename T>
 void startDining(int n, T time) {
-    std::vector<Fork *> forks(n);
-    std::vector<Philosopher *> philosophers(n);
+    std::vector<std::shared_ptr<Fork>> forks;
+    std::vector<std::unique_ptr<Philosopher>> philosophers;
+    forks.reserve(n);
+    philosophers.reserve(n);
 
     for (int i = 0; i < n; i++) {
-        forks[i] = new Fork(Fork(i + 1));
+        forks.push_back(Fork::create());
     }
     for (int i = 0; i < n; i++) {
         if (i == n - 1) {
-            philosophers[i] = new Philosopher(i + 1, *forks[i], *forks[0], m_cout);
+            philosophers.push_back(std::make_unique<Philosopher>(i + 1, forks[i]->getptr(), forks[0]->getptr(), m_cout));
         } else {
-            philosophers[i] = new Philosopher(i + 1, *forks[i], *forks[i + 1], m_cout);
+            philosophers.push_back(std::make_unique<Philosopher>(i + 1, forks[i]->getptr(), forks[i+1]->getptr(), m_cout));
         }
-        philosophers[i]->start();
+        philosophers[i].get()->start();
     }
 
     std::this_thread::sleep_for(time);
-    for (auto *p: philosophers) {
-        p->stop();
+    for (int i = 0; i < n; i++) {
+        philosophers[i].get()->stop();
     }
-    for (auto *p: philosophers) {
-        delete p;
-    }
-    philosophers.clear();
-    for (auto *p: forks) {
-        delete p;
-    }
-    forks.clear();
 }
 
 int main() {
