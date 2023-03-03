@@ -37,6 +37,7 @@ public:
         leftFork(std::move(left)),
         rightFork(std::move(right)) {
         meals = 0;
+        waitingTime = 0;
     }
 
     void start() {
@@ -51,7 +52,7 @@ public:
     }
 
     ~Philosopher() {
-        status("ate " + std::to_string(meals) + " times");
+        status("ate " + std::to_string(meals) + " times. Average waiting time = " + std::to_string(waitingTime/meals) + "ms");
     }
 
 
@@ -76,8 +77,11 @@ private:
     }
 
     void eat() {
+        auto start = std::chrono::high_resolution_clock::now();
         std::lock_guard<std::mutex> lck(leftFork->mutex);
         std::lock_guard<std::mutex> rck(rightFork->mutex);
+        auto end = std::chrono::high_resolution_clock::now();
+        waitingTime += std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         status("is eating");
         meals++;
         std::this_thread::sleep_for(10ms);
@@ -90,6 +94,7 @@ private:
     int meals;
     std::shared_ptr<Fork> leftFork;
     std::shared_ptr<Fork> rightFork;
+    long long int waitingTime;
 };
 
 std::ostream &operator<<(std::ostream &os, const Philosopher &philosopher) {
