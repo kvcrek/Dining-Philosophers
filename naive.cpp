@@ -9,9 +9,9 @@
 #include <vector>
 #include <mutex>
 #include <memory>
+#include "coutLock.hpp"
 
 using namespace std::chrono_literals;
-std::mutex m_cout;
 
 class Fork : public std::enable_shared_from_this<Fork>  {
 public:
@@ -31,9 +31,8 @@ private:
 
 class Philosopher {
 public:
-    explicit Philosopher(int id, std::shared_ptr<Fork> left, std::shared_ptr<Fork> right, std::mutex &cout_lock)
+    explicit Philosopher(int id, std::shared_ptr<Fork> left, std::shared_ptr<Fork> right)
         : id(id),
-        cout_lock(cout_lock),
         leftFork(std::move(left)),
         rightFork(std::move(right)) {
         meals = 0;
@@ -67,7 +66,7 @@ private:
     }
 
     void status(const std::string &str) {
-        std::lock_guard<std::mutex> lck(cout_lock);
+        std::lock_guard<std::mutex> lck(CoutLock::instance().get_mutex());
         std::cout << *this << " " << str << std::endl;
     }
 
@@ -88,7 +87,6 @@ private:
     }
 
     bool paused = true;
-    std::mutex &cout_lock;
     std::thread thr = std::thread(&Philosopher::run, this);
     int id;
     int meals;
@@ -114,9 +112,9 @@ void startDining(int n, T time) {
     }
     for (int i = 0; i < n; i++) {
         if (i == n - 1) {
-            philosophers.push_back(std::make_unique<Philosopher>(i + 1, forks[i]->getptr(), forks[0]->getptr(), m_cout));
+            philosophers.push_back(std::make_unique<Philosopher>(i + 1, forks[i]->getptr(), forks[0]->getptr()));
         } else {
-            philosophers.push_back(std::make_unique<Philosopher>(i + 1, forks[i]->getptr(), forks[i+1]->getptr(), m_cout));
+            philosophers.push_back(std::make_unique<Philosopher>(i + 1, forks[i]->getptr(), forks[i+1]->getptr()));
         }
         philosophers[i]->start();
     }
