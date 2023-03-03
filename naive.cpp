@@ -45,13 +45,15 @@ public:
 
     void stop() {
         paused = true;
-        if(thr.joinable()){
-        thr.join();
-        }
     }
 
     ~Philosopher() {
+        stop();
+        if(thr.joinable()){
+            thr.join();
+        }
         status("ate " + std::to_string(meals) + " times. Average waiting time = " + std::to_string(waitingTime/meals) + "ms");
+
     }
 
 
