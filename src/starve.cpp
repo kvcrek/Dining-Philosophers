@@ -9,12 +9,12 @@ Starve::Starve(int id, std::shared_ptr<Fork> left, std::shared_ptr<Fork> right)
         : Philosopher(id, std::move(left), std::move(right)) {}
 
 void Starve::eat() {
-    auto start = std::chrono::high_resolution_clock::now();
+    stopwatch.start();
     std::lock(leftFork->mutex, rightFork->mutex);
     std::lock_guard<std::mutex> lck(leftFork->mutex, std::adopt_lock);
     std::lock_guard<std::mutex> rck(rightFork->mutex, std::adopt_lock);
     auto end = std::chrono::high_resolution_clock::now();
-    waitingTime += std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    stopwatch.stop();
     status("is eating");
     meals++;
     std::this_thread::sleep_for(10ms);
@@ -26,6 +26,7 @@ Starve::~Starve() {
         thr.join();
     }
     enableStatusMessages();
-    status("ate " + std::to_string(meals) + " times. Average waiting time = " + std::to_string(waitingTime / meals) +
-           "ms");
+    status("ate " + std::to_string(meals) + " times. Waiting time = " +
+           std::to_string(stopwatch.getTotalElapsedTime()) +
+           "ms (Average = " + std::to_string(stopwatch.getAverageTime()) + "ms).");
 }

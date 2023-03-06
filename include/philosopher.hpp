@@ -7,6 +7,7 @@
 
 #include "cout_lock.hpp"
 #include "fork.hpp"
+#include "stopwatch.hpp"
 
 using namespace std::chrono_literals;
 
@@ -44,4 +45,5 @@ protected:
     std::shared_ptr<Fork> leftFork;
     std::shared_ptr<Fork> rightFork;
     long long int waitingTime;
+    Stopwatch stopwatch;
 };
