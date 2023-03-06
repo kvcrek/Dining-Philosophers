@@ -13,7 +13,6 @@ void Starve::eat() {
     std::lock(leftFork->mutex, rightFork->mutex);
     std::lock_guard<std::mutex> lck(leftFork->mutex, std::adopt_lock);
     std::lock_guard<std::mutex> rck(rightFork->mutex, std::adopt_lock);
-    auto end = std::chrono::high_resolution_clock::now();
     stopwatch.stop();
     status("is eating");
     meals++;

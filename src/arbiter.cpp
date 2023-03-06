@@ -17,7 +17,6 @@ void Arbiter::eat() {
     sem_wait(&arbiter);
     std::lock_guard<std::mutex> lck(leftFork->mutex);
     std::lock_guard<std::mutex> rck(rightFork->mutex);
-    auto end = std::chrono::high_resolution_clock::now();
     stopwatch.stop();
     status("is eating");
     meals++;

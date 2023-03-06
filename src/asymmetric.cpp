@@ -21,7 +21,6 @@ void Asymmetric::eat() {
     } else {
         std::lock_guard<std::mutex> rck(rightFork->mutex);
         std::lock_guard<std::mutex> lck(leftFork->mutex);
-        auto end = std::chrono::high_resolution_clock::now();
         stopwatch.stop();
         status("is eating");
         meals++;
