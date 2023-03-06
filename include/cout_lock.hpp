@@ -19,13 +19,3 @@ private:
 
     std::mutex m;
 };
-
-
-CoutLock &CoutLock::instance() {
-    static CoutLock instance;
-    return instance;
-}
-
-std::mutex &CoutLock::get_mutex() {
-    return m;
-}

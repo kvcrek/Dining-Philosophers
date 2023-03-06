@@ -3,7 +3,6 @@ project(DiningPhilosophers)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Naive naive.cpp)
-add_executable(Starve starve.cpp)
-add_executable(Asymmetric asymmetric.cpp)
-add_executable(Arbiter arbiter.cpp)
+file(GLOB sources src/*.cpp)
+
+add_executable(main ${sources})
