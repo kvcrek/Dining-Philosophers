@@ -19,9 +19,9 @@ public:
 
     void stop();
 
-    void enableStatusMessages();
+    static void enableStatusMessages();
 
-    void disableStatusMessages();
+    static void disableStatusMessages();
 
     virtual ~Philosopher() = default;
 
@@ -37,13 +37,12 @@ protected:
 
     virtual void eat() = 0;
 
-    bool statusMessageEnabled;
+    static bool statusMessageEnabled;
     bool paused;
     std::thread thr;
     int id;
     int meals;
     std::shared_ptr<Fork> leftFork;
     std::shared_ptr<Fork> rightFork;
-    long long int waitingTime;
     Stopwatch stopwatch;
 };

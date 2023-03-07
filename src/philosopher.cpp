@@ -1,14 +1,14 @@
 #include "../include/philosopher.hpp"
 
+bool Philosopher::statusMessageEnabled = true;
+
 Philosopher::Philosopher(int id, std::shared_ptr<Fork> left, std::shared_ptr<Fork> right)
         : id(id),
           leftFork(std::move(left)),
-          rightFork(std::move(right)) {
-    meals = 0;
-    waitingTime = 0;
-    paused = true;
-    thr = std::thread(&Philosopher::run, this);
-    disableStatusMessages();
+          rightFork(std::move(right)),
+          meals{},
+          paused{true},
+          thr{std::thread(&Philosopher::run, this)} {
 }
 
 void Philosopher::start() {

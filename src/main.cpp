@@ -23,7 +23,6 @@ startDining(int n) {
         } else {
             philosophers.push_back(std::make_unique<T>(i + 1, forks[i]->getptr(), forks[i + 1]->getptr()));
         }
-        philosophers[i]->disableStatusMessages();
         philosophers[i]->start();
     }
     std::this_thread::sleep_for(5s);
@@ -36,6 +35,9 @@ startDining(int n) {
 int main() {
 
     int n = 5;
+
+    Philosopher::disableStatusMessages();
+
     std::cout << "Number of philosophers is set to " << n << std::endl;
     std::cout << "Starting Naive solution" << std::endl;
     startDining<Naive>(n);
@@ -47,5 +49,3 @@ int main() {
     startDining<Arbiter>(n);
     std::cout << "--- Finished ---" << std::endl;
 
-    return 0;
-}
