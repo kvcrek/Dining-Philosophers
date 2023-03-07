@@ -1,6 +1,6 @@
 #pragma once
 
-#include <thread>
+#include <mutex>
 
 class CoutLock {
 public:
