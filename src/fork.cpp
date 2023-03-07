@@ -1,4 +1,4 @@
-#include "../include/fork.hpp"
+#include "fork.hpp"
 
 std::shared_ptr<Fork> Fork::getptr() {
     return shared_from_this();

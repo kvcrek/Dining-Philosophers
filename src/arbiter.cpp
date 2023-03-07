@@ -2,7 +2,7 @@
 //  in this solution. The arbiter makes sure that (n-1) philosophers are trying to eat at the same time. If all the
 //  philosophers tries to eat at the same time, one of them will have to wait until someone else finishes eating.
 
-#include "../include/arbiter.hpp"
+#include "arbiter.hpp"
 
 sem_t Arbiter::arbiter;
 

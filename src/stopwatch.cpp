@@ -1,4 +1,4 @@
-#include "../include/stopwatch.hpp"
+#include "stopwatch.hpp"
 
 Stopwatch::Stopwatch() {
     flag = false;

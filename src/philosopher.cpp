@@ -1,4 +1,4 @@
-#include "../include/philosopher.hpp"
+#include "philosopher.hpp"
 
 bool Philosopher::statusMessageEnabled = true;
 

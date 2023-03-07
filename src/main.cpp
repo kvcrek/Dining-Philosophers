@@ -1,10 +1,10 @@
 #include <iostream>
 #include <vector>
 
-#include "../include/naive.hpp"
-#include "../include/starve.hpp"
-#include "../include/asymmetric.hpp"
-#include "../include/arbiter.hpp"
+#include "naive.hpp"
+#include "starve.hpp"
+#include "asymmetric.hpp"
+#include "arbiter.hpp"
 
 template<typename T>
 std::enable_if_t<std::is_base_of_v<Philosopher, T>, void>

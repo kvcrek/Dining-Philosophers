@@ -3,7 +3,7 @@
 //  Note that, this solution can enter a state, where all philosophers picked up their left fork at the same time, it
 //  can enter a state, where no action is made since all of them are waiting their right forks resulting in deadlock.
 
-#include "../include/naive.hpp"
+#include "naive.hpp"
 
 Naive::Naive(int id, std::shared_ptr<Fork> left, std::shared_ptr<Fork> right)
         : Philosopher(id, std::move(left), std::move(right)) {};

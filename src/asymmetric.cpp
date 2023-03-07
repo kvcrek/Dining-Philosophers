@@ -3,7 +3,7 @@
 //  This method is preventing deadlocks and starvation, but if there is odd number of philosophers, it may cause
 //  uneven distribution of meals between them.
 
-#include "../include/asymmetric.hpp"
+#include "asymmetric.hpp"
 
 Asymmetric::Asymmetric(int id, std::shared_ptr<Fork> left, std::shared_ptr<Fork> right)
         : Philosopher(id, std::move(left), std::move(right)) {};

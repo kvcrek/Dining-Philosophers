@@ -3,7 +3,7 @@
 //  This method prevents deadlocks, but allows for starvation of philosophers in specific case, where one or another
 //  of their neighbors are eating repeatedly.
 
-#include "../include/starve.hpp"
+#include "starve.hpp"
 
 Starve::Starve(int id, std::shared_ptr<Fork> left, std::shared_ptr<Fork> right)
         : Philosopher(id, std::move(left), std::move(right)) {}

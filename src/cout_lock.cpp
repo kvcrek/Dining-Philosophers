@@ -1,4 +1,4 @@
-#include "../include/cout_lock.hpp"
+#include "cout_lock.hpp"
 
 
 CoutLock &CoutLock::instance() {

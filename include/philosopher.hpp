@@ -3,7 +3,6 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
-#include <mutex>
 
 #include "cout_lock.hpp"
 #include "fork.hpp"
