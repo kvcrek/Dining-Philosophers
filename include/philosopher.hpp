@@ -33,6 +33,8 @@ protected:
 
     void status(const std::string &str) const;
 
+    void statusForced(const std::string &str) const;
+
     void think();
 
     virtual void eat() = 0;

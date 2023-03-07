@@ -32,10 +32,9 @@ Philosopher::~Philosopher() {
     if (thr.joinable()) {
         thr.join();
     }
-    enableStatusMessages();
-    status("ate " + std::to_string(meals) + " times. Waiting time = " +
-           std::to_string(stopwatch.getTotalElapsedTime()) +
-           "ms (Average = " + std::to_string(stopwatch.getAverageTime()) + "ms).");
+    statusForced("ate " + std::to_string(meals) + " times. Waiting time = " +
+                 std::to_string(stopwatch.getTotalElapsedTime()) +
+                 "ms (Average = " + std::to_string(stopwatch.getAverageTime()) + "ms).");
 }
 
 void Philosopher::think() {
@@ -46,6 +45,9 @@ void Philosopher::think() {
 void Philosopher::run() {
     while (!paused) {
         think();
+        if (paused) {   // temporary workaround, there is a bug, which might cause memory access violation
+            return;
+        }
         eat();
     }
 }
@@ -54,6 +56,11 @@ void Philosopher::status(const std::string &str) const {
     if (!statusMessageEnabled) {
         return;
     }
+    std::lock_guard<std::mutex> lck(CoutLock::instance().get_mutex());
+    std::cout << *this << " " << str << std::endl;
+}
+
+void Philosopher::statusForced(const std::string &str) const {
     std::lock_guard<std::mutex> lck(CoutLock::instance().get_mutex());
     std::cout << *this << " " << str << std::endl;
 }
