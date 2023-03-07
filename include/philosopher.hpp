@@ -23,7 +23,7 @@ public:
 
     static void disableStatusMessages();
 
-    virtual ~Philosopher() = default;
+    virtual ~Philosopher();
 
     friend std::ostream &operator<<(std::ostream &os, const Philosopher &philosopher);
 

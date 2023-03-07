@@ -48,4 +48,4 @@ int main() {
     std::cout << "Starting Arbiter solution" << std::endl;
     startDining<Arbiter>(n);
     std::cout << "--- Finished ---" << std::endl;
-
+}

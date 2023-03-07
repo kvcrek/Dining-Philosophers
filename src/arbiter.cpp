@@ -23,14 +23,3 @@ void Arbiter::eat() {
     std::this_thread::sleep_for(10ms);
     sem_post(&arbiter);
 }
-
-Arbiter::~Arbiter() {
-    stop();
-    if (thr.joinable()) {
-        thr.join();
-    }
-    enableStatusMessages();
-    status("ate " + std::to_string(meals) + " times. Waiting time = " +
-           std::to_string(stopwatch.getTotalElapsedTime()) +
-           "ms (Average = " + std::to_string(stopwatch.getAverageTime()) + "ms).");
-}

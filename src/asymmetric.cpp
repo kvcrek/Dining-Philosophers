@@ -27,14 +27,3 @@ void Asymmetric::eat() {
         std::this_thread::sleep_for(10ms);
     }
 }
-
-Asymmetric::~Asymmetric() {
-    stop();
-    if (thr.joinable()) {
-        thr.join();
-    }
-    enableStatusMessages();
-    status("ate " + std::to_string(meals) + " times. Waiting time = " +
-           std::to_string(stopwatch.getTotalElapsedTime()) +
-           "ms (Average = " + std::to_string(stopwatch.getAverageTime()) + "ms).");
-}
