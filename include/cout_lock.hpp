@@ -12,6 +12,10 @@ public:
 
     CoutLock &operator=(const CoutLock &) = delete;
 
+    CoutLock(CoutLock &&) = delete;
+
+    CoutLock &operator=(CoutLock &&) = delete;
+
 private:
     CoutLock() = default;
 
