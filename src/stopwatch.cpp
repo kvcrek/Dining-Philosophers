@@ -6,25 +6,31 @@ Stopwatch::Stopwatch() :
         laps{0} {}
 
 void Stopwatch::start() {
-    if (!flag) {
-        flag = true;
-    } else {
-        std::cout << "Stopwatch is already started" << std::endl;
-        return;
+    try {
+        if (!flag) {
+            flag = true;
+        } else {
+            throw std::runtime_error("Stopwatch is already started");
+        }
+        startTime = std::chrono::high_resolution_clock::now();
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << '\n';
     }
-    startTime = std::chrono::high_resolution_clock::now();
 }
 
 void Stopwatch::stop() {
-    if (flag) {
-        flag = false;
-    } else {
-        std::cout << "Stopwatch is already stopped" << std::endl;
-        return;
+    try {
+        if (flag) {
+            flag = false;
+        } else {
+            throw std::runtime_error("Stopwatch is already stopped");
+        }
+        stopTime = std::chrono::high_resolution_clock::now();
+        totalElapsedTime += (stopTime - startTime);
+        laps++;
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << '\n';
     }
-    stopTime = std::chrono::high_resolution_clock::now();
-    totalElapsedTime += (stopTime - startTime);
-    laps++;
 }
 
 std::chrono::duration<double,std::milli> Stopwatch::getAverageTime() const {
