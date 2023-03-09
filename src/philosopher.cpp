@@ -35,7 +35,7 @@ Philosopher::~Philosopher() {
     std::string totalTime = std::to_string(stopwatch.getTotalElapsedTime().count());
     std::string averageTime = std::to_string(stopwatch.getAverageTime().count());
     statusForced("ate " + std::to_string(meals) + " times. Waiting time = " +
-                 totalTime.erase(averageTime.size() - 4) +
+                 totalTime.erase(totalTime.size() - 4) +
                  "ms (Average = " + averageTime.erase(averageTime.size() - 4) + "ms).");
 }
 
