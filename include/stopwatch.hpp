@@ -11,17 +11,15 @@ public:
 
     void stop();
 
-    //Returns average time in milliseconds
-    double getAverageTime();
+    std::chrono::duration<double,std::milli> getAverageTime() const;
 
-    //Returns total elapsed time in milliseconds
-    double getTotalElapsedTime();
+    std::chrono::duration<double,std::milli> getTotalElapsedTime() const;
 
-    int getLapAmount();
+    size_t getLapAmount() const;
 
 private:
     bool flag;
     std::chrono::time_point<std::chrono::high_resolution_clock> startTime, stopTime;
-    double totalElapsedTime;
-    int laps;
+    std::chrono::duration<double,std::milli> totalElapsedTime;
+    size_t laps;
 };

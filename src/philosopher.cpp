@@ -32,9 +32,11 @@ Philosopher::~Philosopher() {
     if (thr.joinable()) {
         thr.join();
     }
+    std::string totalTime = std::to_string(stopwatch.getTotalElapsedTime().count());
+    std::string averageTime = std::to_string(stopwatch.getAverageTime().count());
     statusForced("ate " + std::to_string(meals) + " times. Waiting time = " +
-                 std::to_string(stopwatch.getTotalElapsedTime()) +
-                 "ms (Average = " + std::to_string(stopwatch.getAverageTime()) + "ms).");
+                 totalTime.erase(averageTime.size() - 4) +
+                 "ms (Average = " + averageTime.erase(averageTime.size() - 4) + "ms).");
 }
 
 void Philosopher::think() {

@@ -1,10 +1,9 @@
 #include "stopwatch.hpp"
 
-Stopwatch::Stopwatch() {
-    flag = false;
-    totalElapsedTime = 0;
-    laps = 0;
-}
+Stopwatch::Stopwatch() :
+        flag{false},
+        totalElapsedTime{0},
+        laps{0} {}
 
 void Stopwatch::start() {
     if (!flag) {
@@ -24,18 +23,18 @@ void Stopwatch::stop() {
         return;
     }
     stopTime = std::chrono::high_resolution_clock::now();
-    totalElapsedTime += std::chrono::duration_cast<std::chrono::microseconds>(stopTime - startTime).count();
+    totalElapsedTime += (stopTime - startTime);
     laps++;
 }
 
-double Stopwatch::getAverageTime() {
-    return (totalElapsedTime / laps) / 1000;
+std::chrono::duration<double,std::milli> Stopwatch::getAverageTime() const {
+    return (totalElapsedTime / laps);
 }
 
-double Stopwatch::getTotalElapsedTime() {
-    return totalElapsedTime / 1000;
+std::chrono::duration<double,std::milli> Stopwatch::getTotalElapsedTime() const {
+    return totalElapsedTime;
 }
 
-int Stopwatch::getLapAmount() {
+size_t Stopwatch::getLapAmount() const {
     return laps;
 }
