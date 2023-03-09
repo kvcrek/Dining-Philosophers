@@ -1,11 +1,6 @@
 #include "cout_lock.hpp"
 
-
-CoutLock &CoutLock::instance() {
-    static CoutLock instance;
-    return instance;
-}
-
-std::mutex &CoutLock::get_mutex() {
+std::mutex &CoutLock::getCoutMutex() {
+    static std::mutex m;
     return m;
 }

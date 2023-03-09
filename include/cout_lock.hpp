@@ -4,9 +4,7 @@
 
 class CoutLock {
 public:
-    static CoutLock &instance();
-
-    std::mutex &get_mutex();
+    static std::mutex &getCoutMutex();
 
     CoutLock(const CoutLock &) = delete;
 
@@ -21,5 +19,5 @@ private:
 
     ~CoutLock() = default;
 
-    std::mutex m;
+    static std::mutex m;
 };

@@ -58,12 +58,12 @@ void Philosopher::status(const std::string &str) const {
     if (!statusMessageEnabled) {
         return;
     }
-    std::lock_guard<std::mutex> lck(CoutLock::instance().get_mutex());
+    std::lock_guard<std::mutex> lck(CoutLock::getCoutMutex());
     std::cout << *this << " " << str << std::endl;
 }
 
 void Philosopher::statusForced(const std::string &str) const {
-    std::lock_guard<std::mutex> lck(CoutLock::instance().get_mutex());
+    std::lock_guard<std::mutex> lck(CoutLock::getCoutMutex());
     std::cout << *this << " " << str << std::endl;
 }
 
