@@ -4,9 +4,18 @@ project(DiningPhilosophers)
 set(CMAKE_CXX_STANDARD 20)
 
 
-file(GLOB sources src/*.cpp)
+set(SOURCE_FILES src/main.cpp
+        src/arbiter.cpp
+        src/asymmetric.cpp
+        src/cout_lock.cpp
+        src/fork.cpp
+        src/main.cpp
+        src/naive.cpp
+        src/philosopher.cpp
+        src/starve.cpp
+        src/stopwatch.cpp)
 
-add_executable(main ${sources})
+add_executable(main ${SOURCE_FILES})
 
 target_include_directories(main
         PRIVATE
