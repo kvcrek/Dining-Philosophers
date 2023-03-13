@@ -7,9 +7,9 @@ class Stopwatch {
 public:
     Stopwatch();
 
-    void start();
+    bool start();
 
-    void stop();
+    bool stop();
 
     std::chrono::duration<double,std::milli> getAverageTime() const;
 
