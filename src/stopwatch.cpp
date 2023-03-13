@@ -27,7 +27,15 @@ bool Stopwatch::stop() {
     return true;
 }
 
+void Stopwatch::reset() {
+    totalElapsedTime = std::chrono::duration<double, std::milli>(0);
+    laps = 0;
+}
+
 std::chrono::duration<double, std::milli> Stopwatch::getAverageTime() const {
+    if (laps == 0) {
+        return std::chrono::duration<double, std::milli>(0);
+    }
     return (totalElapsedTime / laps);
 }
 

@@ -11,6 +11,8 @@ public:
 
     bool stop();
 
+    void reset();
+
     std::chrono::duration<double,std::milli> getAverageTime() const;
 
     std::chrono::duration<double,std::milli> getTotalElapsedTime() const;
