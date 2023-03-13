@@ -3,7 +3,6 @@ project(DiningPhilosophers)
 
 set(CMAKE_CXX_STANDARD 20)
 
-
 set(SOURCE_FILES src/main.cpp
         src/arbiter.cpp
         src/asymmetric.cpp
