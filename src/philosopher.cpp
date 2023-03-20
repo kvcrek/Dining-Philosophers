@@ -1,6 +1,7 @@
 #include "philosopher.hpp"
 
 bool Philosopher::statusMessageEnabled = true;
+bool Philosopher::destructorMessagesEnabled = true;
 
 Philosopher::Philosopher(int id, std::shared_ptr<Fork> left, std::shared_ptr<Fork> right)
         : id(id),
@@ -27,6 +28,14 @@ void Philosopher::disableStatusMessages() {
     statusMessageEnabled = false;
 }
 
+void Philosopher::enableDestructorMessages() {
+    destructorMessagesEnabled = true;
+}
+
+void Philosopher::disableDestructorMessages() {
+    destructorMessagesEnabled = false;
+}
+
 Philosopher::~Philosopher() {
     stop();
     if (thr.joinable()) {
@@ -34,7 +43,7 @@ Philosopher::~Philosopher() {
     }
     std::string totalTime = std::to_string(stopwatch.getTotalElapsedTime().count());
     std::string averageTime = std::to_string(stopwatch.getAverageTime().count());
-    statusForced("ate " + std::to_string(meals) + " times. Waiting time = " +
+    destructorMessage("ate " + std::to_string(meals) + " times. Waiting time = " +
                  totalTime.erase(totalTime.size() - 4) +
                  "ms (Average = " + averageTime.erase(averageTime.size() - 4) + "ms).");
 }
@@ -62,7 +71,10 @@ void Philosopher::status(const std::string &str) const {
     std::cout << *this << " " << str << std::endl;
 }
 
-void Philosopher::statusForced(const std::string &str) const {
+void Philosopher::destructorMessage(const std::string &str) const {
+    if (!destructorMessagesEnabled){
+        return;
+    }
     std::lock_guard<std::mutex> lck(CoutLock::getCoutMutex());
     std::cout << *this << " " << str << std::endl;
 }

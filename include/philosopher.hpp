@@ -22,6 +22,10 @@ public:
 
     static void disableStatusMessages();
 
+    static void enableDestructorMessages();
+
+    static void disableDestructorMessages();
+
     virtual ~Philosopher();
 
     friend std::ostream &operator<<(std::ostream &os, const Philosopher &philosopher);
@@ -32,13 +36,14 @@ protected:
 
     void status(const std::string &str) const;
 
-    void statusForced(const std::string &str) const;
+    void destructorMessage(const std::string &str) const;
 
     void think();
 
     virtual void eat() = 0;
 
     static bool statusMessageEnabled;
+    static bool destructorMessagesEnabled;
     bool paused;
     std::thread thr;
     int id;
